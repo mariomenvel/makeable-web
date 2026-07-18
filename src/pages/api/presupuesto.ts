@@ -110,7 +110,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       },
       body: JSON.stringify({
         from: RESEND_FROM,
-        to: [contact.email],
+        to: [contact.notifyTo],
         reply_to: email,
         subject: `Presupuesto web — ${nombre}${producto ? ` (${producto})` : ''}`,
         html,
