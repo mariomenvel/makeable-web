@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.makeable.es/sitemap-index.xml
+Sitemap: https://makeable.es/sitemap-index.xml

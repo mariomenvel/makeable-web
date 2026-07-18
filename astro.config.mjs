@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import cloudflare from '@astrojs/cloudflare';
 
 // URL final del sitio. Cámbiala cuando tengas el dominio definitivo.
-const SITE_URL = 'https://www.makeable.es';
+const SITE_URL = 'https://makeable.es';
 
 // https://astro.build/config
 export default defineConfig({
