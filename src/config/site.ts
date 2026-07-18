@@ -50,7 +50,7 @@ export const analytics = {
   cloudflareToken: '',
   umamiSrc: '',
   umamiWebsiteId: '',
-  googleSiteVerification: '', // <meta> de Google Search Console
+  googleSiteVerification: 'h6gYonMCXIYj6PTUbR3rHQ9yMbcORAsFn0Xwk3cBMTY', // <meta> de Google Search Console
 } as const;
 
 export const location = {
