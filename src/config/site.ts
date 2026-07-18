@@ -36,6 +36,11 @@ export const forms = {
   endpoint: '/api/presupuesto',
 } as const;
 
+/* Remitente de los emails (dominio verificado en Resend) */
+export const mail = {
+  from: 'Makeable <presupuestos@makeable.es>',
+} as const;
+
 /* --------------------------------------------------------------------------
    ANALÍTICA (sin cookies — no necesita banner de consentimiento)
    Elige un proveedor y pega su token/dominio. Déjalo en '' para desactivar.
