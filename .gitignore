@@ -31,3 +31,7 @@ Thumbs.db
 # Exportación de Instagram (contiene datos personales, NO subir)
 instagram-makeablestudio-*/
 
+
+# temporales
+scratch_*
+*.log
