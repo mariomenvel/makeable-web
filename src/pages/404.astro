@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Isotipo from '../components/Isotipo.astro';
+---
+
+<BaseLayout title="Página no encontrada" description="La página que buscas no existe." noindex={true}>
+  <section class="section center" style="padding-block: clamp(4rem, 12vw, 9rem);">
+    <div class="container container-narrow">
+      <div style="display:inline-grid;place-items:center;margin-bottom:1.5rem;">
+        <Isotipo size={56} />
+      </div>
+      <h1 style="font-size: var(--fs-display); font-weight: 900;">404</h1>
+      <p class="lead mx-auto measure">
+        Esta página se ha quedado sin podio. El enlace que buscas no existe o se ha movido.
+      </p>
+      <div style="display:flex;gap:0.85rem;justify-content:center;flex-wrap:wrap;margin-top:2rem;">
+        <Button href="/" variant="primary" size="lg">Volver al inicio</Button>
+        <Button href="/galeria" variant="outline" size="lg">Ver la galería</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

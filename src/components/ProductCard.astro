@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import PodiumPlaceholder from './PodiumPlaceholder.astro';
+
+interface Props {
+  title: string;
+  href: string;
+  text: string;
+  from?: number;
+  label?: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+}
+const { title, href, text, from, label = title, image, imageAlt } = Astro.props;
+const fromLabel = from === undefined ? '' : Number.isInteger(from) ? String(from) : from.toFixed(2).replace('.', ',');
+---
+
+<a class="pcard" href={href}>
+  <div class="pcard__media">
+    {
+      image ? (
+        <Image
+          src={image}
+          alt={imageAlt ?? title}
+          widths={[400, 700]}
+          sizes="(max-width: 640px) 90vw, 33vw"
+          class="pcard__img"
+        />
+      ) : (
+        <PodiumPlaceholder label={label} ratio="16 / 11" />
+      )
+    }
+  </div>
+  <div class="pcard__body">
+    <h3 class="pcard__title">{title}</h3>
+    <p class="pcard__text">{text}</p>
+    <span class="pcard__foot">
+      {from && <span class="pcard__price">desde {fromLabel}€</span>}
+      <span class="pcard__link">Ver más
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </span>
+    </span>
+  </div>
+</a>
+
+<style>
+  .pcard {
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .pcard:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--blue);
+  }
+  .pcard__media {
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background: var(--gray);
+  }
+  .pcard__media :global(.ph) {
+    border: none;
+    border-radius: 0;
+    height: 100%;
+  }
+  .pcard__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--dur) var(--ease);
+  }
+  .pcard:hover .pcard__img {
+    transform: scale(1.04);
+  }
+  .pcard__body {
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex-grow: 1;
+  }
+  .pcard__title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+  .pcard__text {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    flex-grow: 1;
+  }
+  .pcard__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+  }
+  .pcard__price {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .pcard__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--blue-700);
+    font-weight: 700;
+    font-size: var(--fs-small);
+  }
+  .pcard:hover .pcard__link svg {
+    transform: translateX(3px);
+  }
+  .pcard__link svg {
+    transition: transform var(--dur) var(--ease);
+  }
+</style>

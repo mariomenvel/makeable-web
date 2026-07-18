@@ -1,0 +1,484 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contact, forms } from '../config/site';
+
+const title = 'Pedir presupuesto';
+const description =
+  'Pide presupuesto para tus trofeos, medallas o Funko Pops personalizados. Sube tus ideas o bocetos y te respondemos en 24–48 h. Sin compromiso.';
+---
+
+<BaseLayout title={title} description={description} noindex={false}>
+  <section class="section budget">
+    <div class="container budget__grid">
+      <!-- Columna informativa -->
+      <aside class="budget__aside">
+        <span class="eyebrow">Presupuesto sin compromiso</span>
+        <h1 class="budget__title">Cuéntanos tu idea</h1>
+        <p class="lead">
+          Rellena el formulario con los datos de tu evento. Cuanto más nos cuentes —y cuantas más
+          referencias o bocetos subas— mejor enfocaremos tu diseño.
+        </p>
+        <ul class="budget__points">
+          <li>Respuesta en <strong>24–48 h</strong></li>
+          <li>Presupuesto <strong>orientativo gratis</strong></li>
+          <li>Puedes <strong>subir imágenes</strong> de tus ideas</li>
+          <li>Envíos a <strong>toda España</strong></li>
+        </ul>
+
+        <div class="budget__alt">
+          <p>¿Prefieres escribirnos directamente?</p>
+          <div class="budget__alt-links">
+            <a class="budget__alt-link" href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noopener">
+              WhatsApp
+            </a>
+            <a class="budget__alt-link" href={`mailto:${contact.email}`}>{contact.email}</a>
+            <a class="budget__alt-link" href={`tel:${contact.phoneHref}`}>{contact.phone}</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Formulario -->
+      <div class="budget__form-wrap">
+        <form
+          id="budget-form"
+          class="form"
+          method="POST"
+          action={forms.endpoint || undefined}
+          enctype="multipart/form-data"
+          novalidate
+        >
+          <!-- Honeypot anti-spam -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true" />
+
+          <div class="form__row">
+            <div class="field">
+              <label for="nombre">Nombre *</label>
+              <input id="nombre" name="nombre" type="text" required autocomplete="name" placeholder="Tu nombre" />
+            </div>
+            <div class="field">
+              <label for="email">Email *</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="tucorreo@ejemplo.com" />
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="telefono">Teléfono</label>
+              <input id="telefono" name="telefono" type="tel" autocomplete="tel" placeholder="+34 ..." />
+            </div>
+            <div class="field">
+              <label for="producto">¿Qué necesitas? *</label>
+              <select id="producto" name="producto" required>
+                <option value="" disabled selected>Elige una opción</option>
+                <option>Trofeos personalizados</option>
+                <option>Medallas personalizadas</option>
+                <option>Trofeos y medallas</option>
+                <option>Funko Pop personalizado</option>
+                <option>Otro / no lo tengo claro</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form__row">
+            <div class="field">
+              <label for="cantidad">Cantidad aproximada</label>
+              <input id="cantidad" name="cantidad" type="text" inputmode="numeric" placeholder="Ej. 3 trofeos + 20 medallas" />
+            </div>
+            <div class="field">
+              <label for="fecha">Fecha del evento</label>
+              <input id="fecha" name="fecha" type="date" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="mensaje">Cuéntanos tu idea *</label>
+            <textarea id="mensaje" name="mensaje" rows="5" required
+              placeholder="Tipo de evento, deporte o temática, estilo, colores, texto que quieres que aparezca..."></textarea>
+          </div>
+
+          <!-- Subida de imágenes -->
+          <div class="field">
+            <label for="imagenes">Sube tus ideas o referencias (opcional)</label>
+            <div class="dropzone" id="dropzone">
+              <input id="imagenes" name="imagenes[]" type="file" accept="image/*,.pdf" multiple />
+              <div class="dropzone__inner">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <p><strong>Arrastra imágenes aquí</strong> o haz clic para seleccionarlas</p>
+                <span class="dropzone__hint">JPG, PNG o PDF · hasta 5 archivos · máx. 10 MB cada uno</span>
+              </div>
+            </div>
+            <ul class="preview" id="preview" aria-live="polite"></ul>
+          </div>
+
+          <div class="field field--check">
+            <input id="consent" name="consentimiento" type="checkbox" required />
+            <label for="consent">
+              He leído y acepto la <a href="/politica-de-privacidad" target="_blank">política de privacidad</a>. *
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--lg form__submit" id="submit-btn">
+            Enviar solicitud
+          </button>
+
+          <p class="form__status" id="form-status" role="status" aria-live="polite" hidden></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script define:vars={{ endpoint: forms.endpoint, email: contact.email }}>
+  const form = document.getElementById('budget-form');
+  const fileInput = document.getElementById('imagenes');
+  const dropzone = document.getElementById('dropzone');
+  const preview = document.getElementById('preview');
+  const status = document.getElementById('form-status');
+  const submitBtn = document.getElementById('submit-btn');
+
+  const MAX_FILES = 5;
+  const MAX_SIZE = 10 * 1024 * 1024;
+  let files = [];
+
+  function renderPreview() {
+    preview.innerHTML = '';
+    files.forEach((file, i) => {
+      const li = document.createElement('li');
+      li.className = 'preview__item';
+      const isImg = file.type.startsWith('image/');
+      li.innerHTML = `
+        <span class="preview__name">${isImg ? '🖼️' : '📄'} ${file.name}</span>
+        <button type="button" class="preview__remove" aria-label="Quitar ${file.name}">✕</button>`;
+      li.querySelector('button').addEventListener('click', () => {
+        files.splice(i, 1);
+        syncInput();
+        renderPreview();
+      });
+      preview.appendChild(li);
+    });
+  }
+
+  function syncInput() {
+    const dt = new DataTransfer();
+    files.forEach((f) => dt.items.add(f));
+    fileInput.files = dt.files;
+  }
+
+  function addFiles(list) {
+    for (const file of list) {
+      if (files.length >= MAX_FILES) {
+        showStatus(`Máximo ${MAX_FILES} archivos.`, 'error');
+        break;
+      }
+      if (file.size > MAX_SIZE) {
+        showStatus(`"${file.name}" supera los 10 MB.`, 'error');
+        continue;
+      }
+      files.push(file);
+    }
+    syncInput();
+    renderPreview();
+  }
+
+  function showStatus(msg, type) {
+    status.hidden = false;
+    status.textContent = msg;
+    status.className = `form__status form__status--${type}`;
+  }
+
+  fileInput.addEventListener('change', (e) => {
+    addFiles(e.target.files);
+  });
+
+  ['dragover', 'dragenter'].forEach((ev) =>
+    dropzone.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dropzone.classList.add('is-drag');
+    })
+  );
+  ['dragleave', 'drop'].forEach((ev) =>
+    dropzone.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dropzone.classList.remove('is-drag');
+    })
+  );
+  dropzone.addEventListener('drop', (e) => {
+    if (e.dataTransfer?.files) addFiles(e.dataTransfer.files);
+  });
+
+  form.addEventListener('submit', async (e) => {
+    // Validación nativa
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      form.reportValidity();
+      return;
+    }
+    if (form._gotcha.value) {
+      e.preventDefault();
+      return;
+    }
+
+    // Sin endpoint configurado -> abrir cliente de correo como plan B
+    if (!endpoint) {
+      e.preventDefault();
+      const body = encodeURIComponent(
+        `Nombre: ${form.nombre.value}\nEmail: ${form.email.value}\nTeléfono: ${form.telefono.value}\n` +
+          `Producto: ${form.producto.value}\nCantidad: ${form.cantidad.value}\nFecha: ${form.fecha.value}\n\n` +
+          `Idea:\n${form.mensaje.value}\n\n(Recuerda adjuntar tus imágenes al correo)`
+      );
+      window.location.href = `mailto:${email}?subject=${encodeURIComponent(
+        'Solicitud de presupuesto - ' + form.nombre.value
+      )}&body=${body}`;
+      showStatus('Abriendo tu cliente de correo… Adjunta ahí tus imágenes y envíanoslo.', 'ok');
+      return;
+    }
+
+    // Envío por fetch al endpoint (Formspree)
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+    showStatus('Enviando tu solicitud…', 'ok');
+    try {
+      const data = new FormData(form);
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        body: data,
+        headers: { Accept: 'application/json' },
+      });
+      if (res.ok) {
+        window.location.href = '/gracias';
+      } else {
+        throw new Error('bad response');
+      }
+    } catch (err) {
+      showStatus('Ups, algo ha fallado. Escríbenos a ' + email + ' y lo solucionamos.', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar solicitud';
+    }
+  });
+</script>
+
+<style>
+  .budget__grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .budget__title {
+    font-size: var(--fs-h1);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin: 0.25rem 0 1rem;
+  }
+  .budget__points {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .budget__points li {
+    position: relative;
+    padding-left: 1.75rem;
+  }
+  .budget__points li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.2em;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: var(--blue)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E")
+      center / 0.75rem no-repeat;
+  }
+  .budget__alt {
+    margin-top: 2.5rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+  .budget__alt-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  .budget__alt-link {
+    font-weight: 700;
+    color: var(--blue-700);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1rem;
+  }
+  .budget__alt-link:hover {
+    background: var(--blue-050);
+  }
+
+  /* Formulario */
+  .budget__form-wrap {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    box-shadow: var(--shadow);
+  }
+  .form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  .field label {
+    font-weight: 500;
+    font-size: var(--fs-small);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    background: var(--white);
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(82, 196, 234, 0.2);
+  }
+  .field textarea {
+    resize: vertical;
+  }
+  .field--check {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .field--check input {
+    width: auto;
+    margin-top: 0.25rem;
+  }
+  .field--check label {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+  .field--check a {
+    color: var(--blue-700);
+    text-decoration: underline;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .dropzone {
+    position: relative;
+    border: 2px dashed var(--gray-200);
+    border-radius: var(--radius);
+    background: var(--gray);
+    transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease);
+  }
+  .dropzone.is-drag {
+    border-color: var(--blue);
+    background: var(--blue-050);
+  }
+  .dropzone input[type='file'] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .dropzone__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    text-align: center;
+    padding: 1.75rem 1rem;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+  .dropzone__inner svg {
+    color: var(--blue-700);
+  }
+  .dropzone__hint {
+    font-size: var(--fs-caption);
+  }
+  .preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .preview__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 0.85rem;
+    background: var(--gray);
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-small);
+  }
+  .preview__name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .preview__remove {
+    color: var(--gray-600);
+    font-size: 1rem;
+    line-height: 1;
+  }
+  .preview__remove:hover {
+    color: var(--ink);
+  }
+
+  .form__submit {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+  .form__status {
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-sm);
+    font-size: var(--fs-small);
+    text-align: center;
+  }
+  .form__status--ok {
+    background: var(--blue-050);
+    color: var(--blue-700);
+  }
+  .form__status--error {
+    background: #fdecec;
+    color: #c0392b;
+  }
+
+  @media (max-width: 860px) {
+    .budget__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 520px) {
+    .form__row {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>

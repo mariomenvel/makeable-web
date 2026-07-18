@@ -1,0 +1,109 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Button from '../components/Button.astro';
+import { contact, location } from '../config/site';
+
+const title = 'Contacto';
+const description =
+  'Ponte en contacto con Makeable Studio para tus trofeos, medallas o Funko Pops personalizados. Escríbenos por email, teléfono o WhatsApp. Estamos en Sevilla y enviamos a toda España.';
+
+const channels = [
+  { label: 'Email', value: contact.email, href: `mailto:${contact.email}` },
+  { label: 'Teléfono', value: contact.phone, href: `tel:${contact.phoneHref}` },
+  { label: 'WhatsApp', value: 'Escríbenos directo', href: `https://wa.me/${contact.whatsapp}` },
+  { label: 'Instagram', value: contact.instagramHandle, href: contact.instagram },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <PageHero
+    eyebrow="Hablemos"
+    title="Contacto"
+    text="¿Tienes un evento a la vista o una idea para un regalo? Cuéntanoslo por el canal que prefieras. Respondemos rápido."
+  />
+
+  <section class="section">
+    <div class="container contact">
+      <div class="contact__channels">
+        {
+          channels.map((c) => (
+            <a class="channel" href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noopener">
+              <span class="channel__label">{c.label}</span>
+              <span class="channel__value">{c.value}</span>
+            </a>
+          ))
+        }
+      </div>
+
+      <aside class="contact__cta info-card">
+        <h2 class="info-card__title">¿Prefieres pedir presupuesto?</h2>
+        <p style="color: var(--text-muted); margin: 0.5rem 0 1.5rem;">
+          Con el formulario puedes contarnos todos los detalles y subir tus ideas o bocetos. Es la
+          forma más rápida de recibir un precio ajustado.
+        </p>
+        <Button href="/presupuesto" variant="primary" size="lg" class="contact__cta-btn">
+          Pedir presupuesto
+        </Button>
+        <p class="contact__location">📍 {location.city}, {location.region} · {location.shipping}</p>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 3.5rem);
+    align-items: start;
+  }
+  .contact__channels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .channel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 1.5rem;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .channel:hover {
+    transform: translateY(-4px);
+    border-color: var(--blue);
+  }
+  .channel__label {
+    font-size: var(--fs-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--blue-700);
+    font-weight: 700;
+  }
+  .channel__value {
+    font-weight: 700;
+    font-size: 1.05rem;
+  }
+  .contact__cta-btn {
+    width: 100%;
+  }
+  .contact__location {
+    margin-top: 1.25rem;
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+  @media (max-width: 860px) {
+    .contact {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 420px) {
+    .contact__channels {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

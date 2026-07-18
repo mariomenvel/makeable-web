@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site, contact, location } from '../config/site';
+---
+
+<BaseLayout title="Aviso legal" description="Aviso legal de Makeable Studio.">
+  <section class="section">
+    <div class="container prose">
+      <h1>Aviso legal</h1>
+      <p>
+        En cumplimiento de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la
+        Información y de Comercio Electrónico (LSSI-CE), se informa de los siguientes datos del titular
+        de este sitio web.
+      </p>
+
+      <h2>Datos del titular</h2>
+      <ul>
+        <li><strong>Titular:</strong> [PENDIENTE: nombre y apellidos o razón social]</li>
+        <li><strong>NIF / CIF:</strong> [PENDIENTE: NIF/CIF]</li>
+        <li><strong>Nombre comercial:</strong> {site.legalName}</li>
+        <li><strong>Domicilio:</strong> [PENDIENTE: domicilio fiscal completo], {location.city}, {location.country}</li>
+        <li><strong>Email:</strong> <a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        <li><strong>Teléfono:</strong> {contact.phone}</li>
+        <li><strong>Sitio web:</strong> {site.url}</li>
+      </ul>
+
+      <h2>Objeto</h2>
+      <p>
+        Este sitio web tiene por objeto dar a conocer y comercializar los productos y servicios de
+        {' '}{site.legalName}: trofeos, medallas y figuras personalizadas fabricadas mediante impresión 3D.
+      </p>
+
+      <h2>Condiciones de uso</h2>
+      <p>
+        El acceso y uso de este sitio atribuye la condición de usuario e implica la aceptación de este
+        aviso legal. El usuario se compromete a hacer un uso adecuado de los contenidos y a no
+        emplearlos para actividades ilícitas o contrarias a la buena fe.
+      </p>
+
+      <h2>Propiedad intelectual e industrial</h2>
+      <p>
+        Todos los contenidos de este sitio (textos, fotografías, diseños, logotipos, marca e isotipo)
+        son titularidad de {site.legalName} o de terceros que han autorizado su uso, y están protegidos
+        por la normativa de propiedad intelectual e industrial. Queda prohibida su reproducción,
+        distribución o transformación sin autorización expresa.
+      </p>
+
+      <h2>Responsabilidad</h2>
+      <p>
+        {site.legalName} no se hace responsable de los daños derivados del uso indebido de este sitio ni
+        de la indisponibilidad temporal del mismo por causas técnicas.
+      </p>
+
+      <h2>Legislación aplicable</h2>
+      <p>
+        Este aviso legal se rige por la legislación española. Para cualquier controversia, las partes se
+        someten a los juzgados y tribunales que correspondan conforme a derecho.
+      </p>
+
+      <p class="prose__note">
+        Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose__note {
+    margin-top: 2.5rem;
+    font-size: var(--fs-caption);
+    color: var(--gray-500);
+  }
+</style>

@@ -1,0 +1,21 @@
+
+> makeable-web@1.0.0 dev
+> astro dev
+
+[2m14:00:55[22m [34m[@astrojs/cloudflare][39m Enabling sessions with Cloudflare KV with the "SESSION" KV binding.
+[2m14:00:55[22m [34m[@astrojs/cloudflare][39m If you see the error "Invalid binding `SESSION`" in your build output, you need to add the binding to your wrangler config file.
+Using vars defined in .env
+[2m14:00:56[22m [34m[types][39m Generated [2m1ms[22m
+[2m14:00:56[22m [34m[content][39m Syncing content
+[2m14:00:57[22m [34m[content][39m Synced content
+
+[42m[1m astro [22m[49m [32mv5.18.2[39m [2mready in[22m 2438 [2mms[22m
+
+[2m┃[22m Local    [36mhttp://localhost:4321/[39m
+[2m┃[22m Network  [2muse --host to expose[22m
+
+[2m14:00:57[22m [32mwatching for file changes...[39m
+[2m14:01:16[22m [34m[200][39m /presupuesto [2m153ms[22m
+[2m14:01:18[22m [34m[200][39m [34mPOST[39m /api/presupuesto [2m401ms[22m
+[2m14:01:18[22m [34m[200][39m /gracias [2m4ms[22m
+[2m14:01:39[22m [34m[200][39m [34mPOST[39m /api/presupuesto [2m305ms[22m

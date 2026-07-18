@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import PodiumPlaceholder from './PodiumPlaceholder.astro';
+
+/**
+ * Galería de diseños.
+ * Carga automáticamente cualquier imagen que sueltes en src/assets/gallery/
+ * (jpg, jpeg, png, webp, avif). Si no hay ninguna, muestra placeholders.
+ *
+ * Nombra los archivos de forma descriptiva para el SEO, p.ej.:
+ *   trofeo-padel-3d-azul.jpg  ->  alt "Trofeo padel 3d azul"
+ */
+interface Props {
+  limit?: number;
+  placeholders?: number;
+}
+const { limit, placeholders = 8 } = Astro.props;
+
+const modules = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/gallery/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}',
+  { eager: true }
+);
+
+let images = Object.entries(modules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([path, mod]) => {
+    const file = path.split('/').pop() ?? '';
+    const name = file
+      .replace(/\.[^.]+$/, '') // quita extensión
+      .replace(/^\d+[-_]/, '') // quita prefijo de orden "01-"
+      .replace(/[-_]+/g, ' ')
+      .trim();
+    const alt = name.charAt(0).toUpperCase() + name.slice(1);
+    return { src: mod.default, alt };
+  });
+
+if (limit) images = images.slice(0, limit);
+const hasImages = images.length > 0;
+const placeholderCount = limit ?? placeholders;
+---
+
+{
+  hasImages ? (
+    <div class="gallery">
+      {images.map((img, i) => (
+        <figure class="gallery__item">
+          <Image
+            src={img.src}
+            alt={img.alt || 'Trofeo personalizado Makeable'}
+            widths={[400, 700, 1000]}
+            sizes="(max-width: 640px) 90vw, (max-width: 1024px) 45vw, 30vw"
+            loading={i < 4 ? 'eager' : 'lazy'}
+            class="gallery__img"
+          />
+        </figure>
+      ))}
+    </div>
+  ) : (
+    <div class="gallery">
+      {Array.from({ length: placeholderCount }).map((_, i) => (
+        <PodiumPlaceholder ratio={i % 3 === 0 ? '1 / 1' : '4 / 5'} />
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .gallery {
+    columns: 3;
+    column-gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  .gallery > * {
+    break-inside: avoid;
+    margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+  }
+  .gallery__item {
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--gray);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .gallery__item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .gallery__img {
+    width: 100%;
+    height: auto;
+  }
+  @media (max-width: 900px) {
+    .gallery {
+      columns: 2;
+    }
+  }
+  @media (max-width: 520px) {
+    .gallery {
+      columns: 1;
+    }
+  }
+</style>

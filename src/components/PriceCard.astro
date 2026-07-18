@@ -1,0 +1,120 @@
+---
+import Button from './Button.astro';
+
+interface Props {
+  name: string;
+  from: number;
+  unit: string;
+  description: string;
+  features: readonly string[];
+  highlight?: boolean;
+}
+const { name, from, unit, description, features, highlight = false } = Astro.props;
+const fromLabel = Number.isInteger(from) ? String(from) : from.toFixed(2).replace('.', ',');
+---
+
+<article class:list={['price', { 'price--highlight': highlight }]}>
+  {highlight && <span class="price__badge">Más popular</span>}
+  <h3 class="price__name">{name}</h3>
+  <p class="price__amount">
+    <span class="price__label">desde</span>
+    <span class="price__value">{fromLabel}€</span>
+    <span class="price__unit">{unit}</span>
+  </p>
+  <p class="price__desc">{description}</p>
+  <ul class="price__features">
+    {features.map((f) => <li>{f}</li>)}
+  </ul>
+  <Button href="/presupuesto" variant={highlight ? 'primary' : 'outline'} class="price__cta">
+    Pedir presupuesto
+  </Button>
+</article>
+
+<style>
+  .price {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .price:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow);
+  }
+  .price--highlight {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(82, 196, 234, 0.25);
+  }
+  .price__badge {
+    position: absolute;
+    top: -0.85rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--blue);
+    color: var(--ink);
+    font-size: var(--fs-caption);
+    font-weight: 700;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+  }
+  .price__name {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+  .price__amount {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin: 0.75rem 0 0.25rem;
+  }
+  .price__label {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+  .price__value {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .price__unit {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+  .price__desc {
+    color: var(--text-muted);
+    margin-bottom: 1.25rem;
+  }
+  .price__features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    margin-bottom: 1.75rem;
+    flex-grow: 1;
+  }
+  .price__features li {
+    position: relative;
+    padding-left: 1.75rem;
+    font-size: var(--fs-small);
+  }
+  .price__features li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 0.75rem no-repeat;
+  }
+  .price__cta {
+    width: 100%;
+  }
+</style>

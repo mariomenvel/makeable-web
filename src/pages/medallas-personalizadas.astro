@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import PriceCard from '../components/PriceCard.astro';
+import Isotipo from '../components/Isotipo.astro';
+import { faqs, priceTiers, site } from '../config/site';
+
+const title = 'Medallas personalizadas';
+const description =
+  'Medallas personalizadas en impresión 3D para tus participantes y finalistas. Diseño, color y cinta a medida. Desde 6 € por unidad, presupuesto sin compromiso y envíos a toda España.';
+
+const medallaTier = priceTiers.filter((t) => t.id === 'medallas');
+const medallaFaqs = faqs.filter((_, i) => [0, 1, 2, 4].includes(i));
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Medallas personalizadas 3D',
+  description,
+  brand: { '@type': 'Brand', name: site.legalName },
+  category: 'Medallas personalizadas',
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'EUR',
+    lowPrice: 6,
+    availability: 'https://schema.org/InStock',
+    seller: { '@type': 'Organization', name: site.legalName },
+  },
+};
+
+const benefits = [
+  { title: 'Forma a tu medida', text: 'No solo el típico círculo: diseñamos la silueta que quieras, con la temática de tu evento.' },
+  { title: 'Color e impresión 3D', text: 'Combinaciones de color vivas y relieves imposibles en una medalla estampada estándar.' },
+  { title: 'Cinta a elegir', text: 'Elige el color de la cinta para que combine con tu marca o tu evento.' },
+  { title: 'Perfectas en cantidad', text: 'Pensadas para premiar a todos los participantes sin disparar el presupuesto.' },
+];
+
+const usos = ['Carreras populares', 'Torneos deportivos', 'Eventos escolares', 'Ligas amateur', 'Campamentos', 'Retos solidarios'];
+---
+
+<BaseLayout title={title} description={description} jsonLd={productJsonLd}>
+  <PageHero
+    eyebrow="Para todos los que participan"
+    title="Medallas personalizadas para tu evento"
+    text="Medallas 3D a medida para participantes, finalistas y ganadores. Diseño, forma, color y cinta pensados para tu carrera, torneo o evento — desde 6 € por unidad."
+    primaryCta={{ label: 'Pedir presupuesto', href: '/presupuesto' }}
+    secondaryCta={{ label: 'Ver diseños', href: '/galeria' }}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Por qué elegirnos</span>
+        <h2>Medallas que apetece colgarse</h2>
+        <p class="lead measure">
+          Una medalla debería recordar el día en que se ganó. Las nuestras se diseñan para tu evento,
+          no salen de un catálogo genérico.
+        </p>
+      </div>
+      <div class="grid grid-2x2">
+        {
+          benefits.map((b) => (
+            <article class="feature">
+              <div class="feature__icon"><Isotipo size={26} /></div>
+              <div>
+                <h3 class="feature__title">{b.title}</h3>
+                <p class="feature__text">{b.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Algunos diseños</span>
+        <h2>Medallas que hemos creado</h2>
+      </div>
+      <Gallery limit={6} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow center">
+      <span class="eyebrow">Para todo tipo de eventos</span>
+      <h2>Ideales para…</h2>
+      <ul class="tags mt-6">
+        {usos.map((u) => <li class="tag">{u}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Precio orientativo</span>
+        <h2>¿Cuánto cuesta una medalla personalizada?</h2>
+        <p class="lead mx-auto measure">
+          Desde 6 € por unidad. Cuantas más medallas, mejor el precio por pieza. Cuéntanos cuántas
+          necesitas y te damos el importe exacto.
+        </p>
+      </div>
+      <div class="mx-auto" style="max-width: 400px;">
+        {medallaTier.map((t) => <PriceCard {...t} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow">
+      <div class="section-head center">
+        <span class="eyebrow">Dudas frecuentes</span>
+        <h2>Preguntas sobre medallas personalizadas</h2>
+      </div>
+      <Faq items={medallaFaqs} />
+    </div>
+  </section>
+
+  <CtaBanner title="Premiemos a los tuyos" />
+</BaseLayout>

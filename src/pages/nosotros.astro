@@ -1,0 +1,124 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Isotipo from '../components/Isotipo.astro';
+import { location } from '../config/site';
+
+const title = 'Sobre nosotros';
+const description =
+  'Makeable Studio es un taller de trofeos y medallas personalizadas en impresión 3D. Diseñamos piezas únicas para que cada premio sea un recuerdo, no un objeto más.';
+
+const valores = [
+  { title: 'Directo', text: 'Hablamos claro, sin rodeos ni letra pequeña.' },
+  { title: 'Físico', text: 'Nos gusta lo que se toca. Piezas reales, con peso e identidad.' },
+  { title: 'Cercano', text: 'Trabajamos contigo, escuchamos tu idea y la hacemos nuestra.' },
+  { title: 'Sin adornos', text: 'Diseño honesto: lo que importa es el premio y quien lo recibe.' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <PageHero
+    eyebrow="Makeable Studio"
+    title="Hacemos realidad el premio que imaginas"
+    text="Somos un taller de trofeos y medallas personalizadas en impresión 3D. Diseñamos y fabricamos piezas únicas, del concepto al acabado final, para que cada premio tenga la identidad que merece."
+  />
+
+  <section class="section">
+    <div class="container about">
+      <div class="about__text">
+        <span class="eyebrow">Nuestra misión</span>
+        <h2>Que el ganador se lleve a casa un recuerdo, no un trofeo cualquiera</h2>
+        <p>
+          Un trofeo o una medalla de catálogo son iguales para todo el mundo. Nosotros creemos que un
+          premio debería contar una historia: la del evento, la del esfuerzo y la de quien lo recibe.
+        </p>
+        <p>
+          Por eso cada pieza que sale de Makeable es <strong>única</strong>. La diseñamos desde cero e
+          imprimimos en 3D, cuidando la forma, el color y cada detalle. Y para quien busca algo con
+          más presencia, tenemos una gama alta con base de cemento que aporta peso y sensación premium.
+        </p>
+        <p>
+          Trabajamos desde {location.city} para organizadores de torneos, ligas, eventos y comunidades
+          de toda España. Y si lo que buscas es un regalo original, también hacemos
+          <a class="text-blue" href="/funko-pops-personalizados">Funko Pops personalizados pintados a mano</a>.
+        </p>
+      </div>
+      <aside class="about__concept">
+        <div class="concept">
+          <div class="concept__icon"><Isotipo size={40} /></div>
+          <h3>El podio, nuestro símbolo</h3>
+          <p>
+            El 1·2·3 del podio resume lo que hacemos: celebrar la excelencia y la competición. Lo verás
+            en nuestro logo, en cada pieza y hasta en el papel que envuelve tu pedido.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Cómo somos</span>
+        <h2>Nuestra forma de trabajar</h2>
+      </div>
+      <div class="grid grid-2x2">
+        {
+          valores.map((v) => (
+            <article class="info-card">
+              <h3 class="info-card__title">{v.title}</h3>
+              <p style="color: var(--text-muted); margin-top: 0.4rem;">{v.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  .about {
+    display: grid;
+    grid-template-columns: 1.4fr 0.9fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .about__text h2 {
+    margin: 0.5rem 0 1.25rem;
+  }
+  .about__text p {
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+  }
+  .concept {
+    background: var(--ink);
+    color: var(--white);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.75rem, 4vw, 2.5rem);
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .concept__icon {
+    margin-bottom: 1rem;
+  }
+  .concept h3 {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .concept p {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: var(--fs-small);
+  }
+  @media (max-width: 860px) {
+    .about {
+      grid-template-columns: 1fr;
+    }
+    .concept {
+      position: static;
+    }
+  }
+</style>

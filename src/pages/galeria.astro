@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+
+const title = 'Galería de diseños';
+const description =
+  'Galería de trofeos, medallas y Funko Pops personalizados creados por Makeable. Cada pieza es única e impresa en 3D. Inspírate para tu próximo evento.';
+---
+
+<BaseLayout title={title} description={description}>
+  <PageHero
+    eyebrow="Nuestros diseños"
+    title="Galería de trofeos y medallas personalizadas"
+    text="Una muestra de lo que hemos fabricado. Ninguna pieza se repite: cada trofeo, medalla o figura se diseña desde cero. Úsala para inspirarte."
+    align="center"
+    primaryCta={{ label: 'Quiero algo así', href: '/presupuesto' }}
+  />
+
+  <section class="section">
+    <div class="container">
+      <Gallery placeholders={12} />
+    </div>
+  </section>
+
+  <CtaBanner title="¿Te ha gustado alguno?" text="Podemos crear algo único para tu evento partiendo de cualquiera de estas ideas. Cuéntanos qué necesitas." />
+</BaseLayout>

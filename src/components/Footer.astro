@@ -1,0 +1,141 @@
+---
+import Logo from './Logo.astro';
+import { contact, location, nav, site } from '../config/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <div class="footer__brand">
+      <a href="/" aria-label="Makeable — inicio"><Logo variant="light" /></a>
+      <p class="footer__tagline">{site.tagline} en impresión 3D. Piezas 100% únicas para tu evento.</p>
+      <p class="footer__ship">{location.shipping} · {location.city}</p>
+    </div>
+
+    <nav class="footer__col" aria-label="Productos">
+      <h2 class="footer__title">Productos</h2>
+      <ul>
+        <li><a href="/trofeos-personalizados">Trofeos personalizados</a></li>
+        <li><a href="/medallas-personalizadas">Medallas personalizadas</a></li>
+        <li><a href="/funko-pops-personalizados">Funko Pops personalizados</a></li>
+        <li><a href="/galeria">Galería de diseños</a></li>
+        <li><a href="/precios">Precios</a></li>
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label="Makeable">
+      <h2 class="footer__title">Makeable</h2>
+      <ul>
+        <li><a href="/nosotros">Nosotros</a></li>
+        <li><a href="/diseno-con-ia">Diseña con IA</a></li>
+        <li><a href="/presupuesto">Pedir presupuesto</a></li>
+        <li><a href="/contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer__col">
+      <h2 class="footer__title">Contacto</h2>
+      <ul>
+        <li><a href={`mailto:${contact.email}`}>{contact.email}</a></li>
+        <li><a href={`tel:${contact.phoneHref}`}>{contact.phone}</a></li>
+        <li>
+          <a href={`https://wa.me/${contact.whatsapp}`} target="_blank" rel="noopener">WhatsApp</a>
+        </li>
+        <li><a href={contact.instagram} target="_blank" rel="noopener">Instagram {contact.instagramHandle}</a></li>
+        <li><a href={contact.tiktok} target="_blank" rel="noopener">TikTok</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <p>© {year} {site.legalName}. Todos los derechos reservados.</p>
+    <nav aria-label="Legal" class="footer__legal">
+      <a href="/aviso-legal">Aviso legal</a>
+      <a href="/politica-de-privacidad">Privacidad</a>
+      <a href="/politica-de-cookies">Cookies</a>
+    </nav>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--ink);
+    color: var(--white);
+    padding-top: clamp(3rem, 6vw, 4.5rem);
+  }
+  .footer__inner {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+    gap: 2.5rem;
+    padding-bottom: 3rem;
+  }
+  .footer__tagline {
+    margin-top: 1rem;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 32ch;
+  }
+  .footer__ship {
+    margin-top: 0.75rem;
+    color: var(--blue);
+    font-weight: 500;
+    font-size: var(--fs-small);
+  }
+  .footer__title {
+    font-size: var(--fs-caption);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 1.1rem;
+    font-weight: 700;
+  }
+  .footer__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .footer__col a {
+    color: rgba(255, 255, 255, 0.85);
+    transition: color var(--dur) var(--ease);
+  }
+  .footer__col a:hover {
+    color: var(--blue);
+  }
+  .footer__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-block: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: var(--fs-small);
+  }
+  .footer__legal {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .footer__legal a:hover {
+    color: var(--white);
+  }
+
+  @media (max-width: 780px) {
+    .footer__inner {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 460px) {
+    .footer__inner {
+      grid-template-columns: 1fr;
+    }
+    .footer__bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

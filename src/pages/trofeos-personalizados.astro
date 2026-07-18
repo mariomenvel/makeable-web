@@ -1,0 +1,245 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import PriceCard from '../components/PriceCard.astro';
+import Isotipo from '../components/Isotipo.astro';
+import { faqs, priceTiers, site } from '../config/site';
+
+const title = 'Trofeos personalizados';
+const description =
+  'Trofeos personalizados en impresión 3D, únicos y a medida para tu torneo, liga o evento. Diseño exclusivo, gama plástico y gama alta con base de cemento. Presupuesto sin compromiso y envíos a toda España.';
+
+const trofeoTiers = priceTiers.filter((t) => t.id === 'trofeos' || t.id === 'gama-alta');
+const trofeoFaqs = faqs.filter((_, i) => [0, 1, 2, 5].includes(i));
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Trofeos personalizados 3D',
+  description,
+  brand: { '@type': 'Brand', name: site.legalName },
+  category: 'Trofeos personalizados',
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'EUR',
+    lowPrice: 25,
+    availability: 'https://schema.org/InStock',
+    seller: { '@type': 'Organization', name: site.legalName },
+  },
+};
+
+const benefits = [
+  { title: 'Diseño exclusivo', text: 'Creamos la forma desde cero según tu deporte, marca o temática. Nada de moldes repetidos.' },
+  { title: 'Impresión 3D a color', text: 'Detalles, relieves y combinaciones de color imposibles en un trofeo de tienda.' },
+  { title: 'Base con tus datos', text: 'Nombre del evento, edición, categoría y posición. Todo grabado en la pieza.' },
+  { title: 'Podio 1·2·3 a juego', text: 'Diseñamos el set completo para oro, plata y bronce con la misma identidad.' },
+];
+
+const gamas = [
+  {
+    name: 'Gama plástico',
+    text: 'Ligeros, resistentes y con color vivo. La opción más versátil y económica para ligas y torneos con muchas unidades.',
+    points: ['Impresión 3D multicolor', 'Muy buena relación calidad-precio', 'Ideal para grandes cantidades'],
+  },
+  {
+    name: 'Gama alta (base de cemento)',
+    text: 'Añadimos una base de cemento que aporta peso y presencia. Al cogerlo, se nota que es un premio importante.',
+    points: ['Mayor peso y sensación premium', 'Acabados reforzados', 'Perfecto para campeonatos destacados'],
+  },
+];
+
+const usos = ['Torneos deportivos', 'Ligas amateur y federadas', 'eSports y gaming', 'Eventos de empresa', 'Concursos y ferias', 'Campeonatos escolares'];
+---
+
+<BaseLayout title={title} description={description} jsonLd={productJsonLd}>
+  <PageHero
+    eyebrow="Producto estrella"
+    title="Trofeos personalizados en 3D, únicos para tu evento"
+    text="Diseñamos y fabricamos trofeos que nadie más tiene. Piezas impresas en 3D con la identidad de tu torneo, liga o competición — desde la forma hasta el último detalle."
+    primaryCta={{ label: 'Pedir presupuesto', href: '/presupuesto' }}
+    secondaryCta={{ label: 'Ver diseños', href: '/galeria' }}
+  />
+
+  <!-- Beneficios -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Por qué elegirnos</span>
+        <h2>Trofeos que se recuerdan, no que se guardan en un cajón</h2>
+        <p class="lead measure">
+          Un trofeo genérico es igual para todos. El nuestro cuenta la historia de <em>tu</em> evento
+          y de quien se lo ha ganado.
+        </p>
+      </div>
+      <div class="grid grid-2x2">
+        {
+          benefits.map((b) => (
+            <article class="feature">
+              <div class="feature__icon"><Isotipo size={26} /></div>
+              <div>
+                <h3 class="feature__title">{b.title}</h3>
+                <p class="feature__text">{b.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Gamas -->
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Dos gamas</span>
+        <h2>Elige el acabado que encaja con tu evento</h2>
+      </div>
+      <div class="grid grid-2">
+        {
+          gamas.map((g) => (
+            <article class="gama">
+              <h3 class="gama__name">{g.name}</h3>
+              <p class="gama__text">{g.text}</p>
+              <ul class="checklist">
+                {g.points.map((p) => <li>{p}</li>)}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Galería -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Algunos diseños</span>
+        <h2>Trofeos que hemos fabricado</h2>
+      </div>
+      <Gallery limit={6} />
+    </div>
+  </section>
+
+  <!-- Usos -->
+  <section class="section section--soft">
+    <div class="container container-narrow center">
+      <span class="eyebrow">Para todo tipo de eventos</span>
+      <h2>Hacemos trofeos para…</h2>
+      <ul class="tags mt-6">
+        {usos.map((u) => <li class="tag">{u}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Precios -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Precios orientativos</span>
+        <h2>¿Cuánto cuesta un trofeo personalizado?</h2>
+        <p class="lead mx-auto measure">
+          El precio depende del tamaño, la cantidad y el diseño. Estos son los puntos de partida por gama.
+        </p>
+      </div>
+      <div class="grid grid-2 mx-auto" style="max-width: 760px;">
+        {trofeoTiers.map((t) => <PriceCard {...t} />)}
+      </div>
+      <p class="center mt-6" style="color: var(--text-muted); font-size: var(--fs-small);">
+        * Precios orientativos por unidad. <a class="text-blue" href="/precios">Ver todos los precios</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section--soft">
+    <div class="container container-narrow">
+      <div class="section-head center">
+        <span class="eyebrow">Dudas frecuentes</span>
+        <h2>Preguntas sobre trofeos personalizados</h2>
+      </div>
+      <Faq items={trofeoFaqs} />
+    </div>
+  </section>
+
+  <CtaBanner title="Diseñemos tu trofeo" />
+</BaseLayout>
+
+<style>
+  .feature {
+    display: flex;
+    gap: 1rem;
+  }
+  .feature__icon {
+    flex-shrink: 0;
+    display: inline-grid;
+    place-items: center;
+    padding: 0.6rem;
+    background: var(--blue-050);
+    border-radius: var(--radius);
+    height: fit-content;
+  }
+  .feature__title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .feature__text {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .gama {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .gama__name {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+  }
+  .gama__text {
+    color: var(--text-muted);
+    margin: 0.75rem 0 1.25rem;
+  }
+
+  .checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .checklist li {
+    position: relative;
+    padding-left: 1.75rem;
+    font-size: var(--fs-small);
+  }
+  .checklist li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.15em;
+    width: 1.15rem;
+    height: 1.15rem;
+    border-radius: 50%;
+    background: var(--blue) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center / 0.75rem no-repeat;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    justify-content: center;
+  }
+  .tag {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    padding: 0.5rem 1.1rem;
+    font-weight: 500;
+    font-size: var(--fs-small);
+  }
+</style>

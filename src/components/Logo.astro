@@ -1,0 +1,25 @@
+---
+/**
+ * Logotipo oficial de Makeable (PNG).
+ * variant: 'default' (Make en negro, para fondo claro)
+ *        | 'light'   (Make en blanco, para fondo oscuro / footer)
+ * El tamaño se fija con estilo en línea para que nunca dependa de la carga del CSS.
+ */
+interface Props {
+  variant?: 'default' | 'light';
+  height?: number;
+  class?: string;
+}
+const { variant = 'default', height = 34, class: className = '' } = Astro.props;
+const src = variant === 'light' ? '/brand/makeable-logo-white.png' : '/brand/makeable-logo.png';
+---
+
+<img
+  src={src}
+  alt="Makeable"
+  class={`logo ${className}`}
+  width="1301"
+  height="336"
+  style={`height:${height}px;width:auto;display:block`}
+  decoding="async"
+/>

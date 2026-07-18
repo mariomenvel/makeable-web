@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import Isotipo from '../components/Isotipo.astro';
+---
+
+<BaseLayout title="¡Gracias!" description="Hemos recibido tu solicitud de presupuesto." noindex={true}>
+  <section class="section thanks">
+    <div class="container container-narrow center">
+      <div class="thanks__icon"><Isotipo size={56} /></div>
+      <h1 class="thanks__title">¡Solicitud recibida!</h1>
+      <p class="lead mx-auto measure">
+        Gracias por confiar en Makeable. Hemos recibido tu idea y te responderemos con un presupuesto
+        orientativo en <strong>24–48 h</strong>. Revisa también tu carpeta de spam por si acaso.
+      </p>
+      <div class="thanks__actions">
+        <Button href="/galeria" variant="primary" size="lg">Ver más diseños</Button>
+        <Button href="/" variant="outline" size="lg">Volver al inicio</Button>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .thanks {
+    padding-block: clamp(4rem, 10vw, 8rem);
+  }
+  .thanks__icon {
+    display: inline-grid;
+    place-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .thanks__title {
+    font-size: var(--fs-h1);
+    font-weight: 900;
+    margin-bottom: 1rem;
+  }
+  .thanks__actions {
+    display: flex;
+    gap: 0.85rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+</style>

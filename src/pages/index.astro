@@ -1,0 +1,410 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import ProductCard from '../components/ProductCard.astro';
+import PriceCard from '../components/PriceCard.astro';
+import Gallery from '../components/Gallery.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Isotipo from '../components/Isotipo.astro';
+import { faqs, priceTiers, site } from '../config/site';
+import imgTrofeos from '../assets/gallery/01-trofeos-3d-moon-showdown-personalizados.jpg';
+import imgMedallas from '../assets/gallery/10-medallas-3d-doradas-personalizadas.jpg';
+import imgFunko from '../assets/gallery/12-funko-pop-personalizado-pintado-a-mano.jpg';
+
+const homeFaqs = faqs.slice(0, 5);
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const values = [
+  {
+    title: 'Nunca dos iguales',
+    text: 'Cada trofeo y medalla se diseña desde cero. No usamos moldes de catálogo: tu premio es único, con identidad propia.',
+    icon: 'unique',
+  },
+  {
+    title: 'Impresión 3D real',
+    text: 'Fabricamos con impresoras 3D pieza a pieza. Formas, colores y detalles imposibles con un trofeo genérico.',
+    icon: 'print',
+  },
+  {
+    title: 'Un recuerdo, no un objeto',
+    text: 'El ganador se lleva a casa algo que cuenta una historia: la de su evento. Eso no se compra en una tienda.',
+    icon: 'memory',
+  },
+  {
+    title: 'Presupuesto sin misterios',
+    text: 'Verás rangos de precio orientativos antes de escribirnos. Sin sorpresas y sin pereza.',
+    icon: 'price',
+  },
+];
+
+const steps = [
+  { n: '01', title: 'Cuéntanos tu idea', text: 'Rellenas el formulario con tu evento, cantidad y estilo. Puedes subir bocetos o referencias.' },
+  { n: '02', title: 'Diseñamos tu pieza', text: 'Creamos un diseño único para ti y te lo enseñamos antes de fabricar nada.' },
+  { n: '03', title: 'Fabricamos en 3D', text: 'Imprimimos pieza a pieza con acabado a elegir: plástico o gama alta con base de cemento.' },
+  { n: '04', title: 'Lo recibes listo', text: 'Te lo enviamos a cualquier punto de España, protegido y a tiempo para tu evento.' },
+];
+---
+
+<BaseLayout jsonLd={faqJsonLd}>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero__inner">
+      <div class="hero__content">
+        <span class="eyebrow">Trofeos y medallas personalizadas · Impresión 3D</span>
+        <h1 class="hero__title">
+          Premios <span class="text-blue">únicos</span> para quien se lo ha ganado
+        </h1>
+        <p class="lead hero__lead">
+          En Makeable diseñamos y fabricamos <strong>trofeos y medallas personalizadas</strong> en
+          impresión 3D. Piezas que nadie más tiene, pensadas para tu torneo, liga o evento.
+        </p>
+        <div class="hero__actions">
+          <Button href="/presupuesto" variant="primary" size="lg">Pedir presupuesto</Button>
+          <Button href="/galeria" variant="outline" size="lg">Ver diseños</Button>
+        </div>
+        <ul class="hero__trust">
+          <li>✓ Diseño 100% a medida</li>
+          <li>✓ Envíos a toda España</li>
+          <li>✓ Presupuesto en 24–48 h</li>
+        </ul>
+      </div>
+
+      <div class="hero__visual" aria-hidden="true">
+        <div class="podium">
+          <div class="podium__col podium__col--3">
+            <div class="podium__piece"><Isotipo size={44} /></div>
+            <div class="podium__block">3</div>
+          </div>
+          <div class="podium__col podium__col--1">
+            <div class="podium__piece podium__piece--gold"><Isotipo size={64} /></div>
+            <div class="podium__block">1</div>
+          </div>
+          <div class="podium__col podium__col--2">
+            <div class="podium__piece"><Isotipo size={52} /></div>
+            <div class="podium__block">2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALORES / DIFERENCIADOR -->
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Por qué Makeable</span>
+        <h2>Un premio genérico se olvida. El tuyo no.</h2>
+      </div>
+      <div class="grid grid-4 values">
+        {
+          values.map((v) => (
+            <article class="value">
+              <div class="value__icon">
+                <Isotipo size={28} />
+              </div>
+              <h3 class="value__title">{v.title}</h3>
+              <p class="value__text">{v.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Qué fabricamos</span>
+        <h2>Elige tu premio</h2>
+        <p class="lead">Desde una liga entera hasta una pieza única de regalo.</p>
+      </div>
+      <div class="grid grid-3">
+        <ProductCard
+          title="Trofeos personalizados"
+          href="/trofeos-personalizados"
+          text="Nuestro producto estrella. Trofeos 3D únicos con toda la identidad de tu evento. Gama plástico y gama alta con base de cemento."
+          from={25}
+          image={imgTrofeos}
+          imageAlt="Trofeos 3D personalizados Moon Showdown"
+        />
+        <ProductCard
+          title="Medallas personalizadas"
+          href="/medallas-personalizadas"
+          text="Medallas a medida para participantes y finalistas. Diseño, color y cinta a tu gusto."
+          from={6}
+          image={imgMedallas}
+          imageAlt="Medallas 3D doradas personalizadas"
+        />
+        <ProductCard
+          title="Funko Pops personalizados"
+          href="/funko-pops-personalizados"
+          text="Tu figura única, pintada a mano. El regalo original que no se olvida."
+          from={39.9}
+          image={imgFunko}
+          imageAlt="Funko Pop personalizado pintado a mano"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- GALERÍA -->
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Nuestros diseños</span>
+        <h2>Cada pieza, una historia</h2>
+        <p class="lead mx-auto measure">
+          Una muestra de trofeos, medallas y figuras que hemos creado. Ninguno se repite.
+        </p>
+      </div>
+      <Gallery limit={6} />
+      <div class="center mt-8">
+        <Button href="/galeria" variant="outline" size="lg">Ver toda la galería</Button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESO -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Cómo funciona</span>
+        <h2>De tu idea a tu podio en 4 pasos</h2>
+      </div>
+      <ol class="steps">
+        {
+          steps.map((s) => (
+            <li class="step">
+              <span class="step__n">{s.n}</span>
+              <h3 class="step__title">{s.title}</h3>
+              <p class="step__text">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- PRECIOS -->
+  <section class="section section--soft" id="precios">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Precios orientativos</span>
+        <h2>Hazte una idea antes de escribirnos</h2>
+        <p class="lead mx-auto measure">
+          Cada proyecto es distinto, pero aquí tienes el punto de partida. El precio final depende
+          del tamaño, la cantidad, el material y el diseño.
+        </p>
+      </div>
+      <div class="grid grid-4 prices">
+        {priceTiers.map((t) => <PriceCard {...t} />)}
+      </div>
+      <p class="prices__note center">
+        * Precios orientativos por unidad. <strong>Envíos incluidos</strong> · Pedido mínimo 200 €.
+        Pídenos un presupuesto ajustado sin compromiso.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section">
+    <div class="container container-narrow">
+      <div class="section-head center">
+        <span class="eyebrow">Dudas frecuentes</span>
+        <h2>Lo que más nos preguntan</h2>
+      </div>
+      <Faq items={homeFaqs} />
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<style>
+  /* HERO */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(2.5rem, 6vw, 5rem);
+    background:
+      radial-gradient(60% 80% at 85% 10%, rgba(82, 196, 234, 0.16), transparent 60%),
+      var(--white);
+  }
+  .hero__inner {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .hero__title {
+    font-size: var(--fs-display);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.02;
+    margin-bottom: 1.25rem;
+  }
+  .hero__lead {
+    max-width: 52ch;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin-top: 2rem;
+  }
+  .hero__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 1.75rem;
+    margin-top: 2rem;
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    font-weight: 500;
+  }
+
+  /* Podio del hero */
+  .hero__visual {
+    display: grid;
+    place-items: center;
+  }
+  .podium {
+    display: flex;
+    align-items: flex-end;
+    gap: 0.75rem;
+    width: min(100%, 420px);
+  }
+  .podium__col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+  }
+  .podium__piece {
+    margin-bottom: 1rem;
+    padding: 0.85rem;
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    animation: float 4s var(--ease) infinite;
+  }
+  .podium__col--1 .podium__piece {
+    animation-delay: 0.3s;
+  }
+  .podium__col--3 .podium__piece {
+    animation-delay: 0.6s;
+  }
+  .podium__piece--gold {
+    box-shadow: 0 0 0 3px var(--blue), var(--shadow-lg);
+  }
+  .podium__block {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--white);
+    font-weight: 900;
+    font-size: 1.5rem;
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  }
+  .podium__col--1 .podium__block {
+    height: 150px;
+    background: var(--blue);
+    color: var(--ink);
+  }
+  .podium__col--2 .podium__block {
+    height: 110px;
+  }
+  .podium__col--3 .podium__block {
+    height: 78px;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* VALORES */
+  .value {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+  .value__icon {
+    display: inline-grid;
+    place-items: center;
+    padding: 0.65rem;
+    background: var(--blue-050);
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+  }
+  .value__title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+  .value__text {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+
+  /* PROCESO */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+    counter-reset: step;
+  }
+  .step {
+    position: relative;
+    padding-top: 1rem;
+    border-top: 3px solid var(--blue);
+  }
+  .step__n {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--blue);
+    letter-spacing: -0.04em;
+  }
+  .step__title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+  .step__text {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+
+  /* PRECIOS */
+  .prices {
+    align-items: stretch;
+  }
+  .prices__note {
+    margin-top: 1.5rem;
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+
+  @media (max-width: 900px) {
+    .hero__inner {
+      grid-template-columns: 1fr;
+    }
+    .hero__visual {
+      order: -1;
+    }
+    .podium {
+      width: min(100%, 360px);
+    }
+  }
+</style>

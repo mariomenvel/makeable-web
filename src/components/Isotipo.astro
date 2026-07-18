@@ -1,0 +1,38 @@
+---
+/**
+ * Isotipo Makeable — el podio (símbolo de marca).
+ * color: color del cuadrado de fondo. barColor: color de las barras.
+ */
+interface Props {
+  size?: number;
+  color?: string;
+  barColor?: string;
+  rounded?: boolean;
+  class?: string;
+}
+const {
+  size = 40,
+  color = 'var(--blue)',
+  barColor = '#ffffff',
+  rounded = true,
+  class: className = '',
+} = Astro.props;
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  role="img"
+  aria-label="Makeable"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <rect width="100" height="100" rx={rounded ? 24 : 0} fill={color} />
+  <g fill={barColor}>
+    <rect x="22" y="52" width="14" height="26" rx="3" />
+    <rect x="43" y="30" width="14" height="48" rx="3" />
+    <rect x="64" y="44" width="14" height="34" rx="3" />
+  </g>
+</svg>

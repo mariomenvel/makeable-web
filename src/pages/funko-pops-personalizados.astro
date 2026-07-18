@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import PriceCard from '../components/PriceCard.astro';
+import Isotipo from '../components/Isotipo.astro';
+import { priceTiers, site } from '../config/site';
+
+const title = 'Funko Pops personalizados';
+const description =
+  'Funko Pops personalizados pintados a mano. Convertimos a quien tú quieras en una figura única de coleccionista. El regalo original perfecto. Envíos a toda España.';
+
+const funkoTier = priceTiers.filter((t) => t.id === 'funko');
+
+const productJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: 'Funko Pop personalizado pintado a mano',
+  description,
+  brand: { '@type': 'Brand', name: site.legalName },
+  category: 'Figuras personalizadas',
+  offers: {
+    '@type': 'AggregateOffer',
+    priceCurrency: 'EUR',
+    lowPrice: 39.9,
+    availability: 'https://schema.org/InStock',
+    seller: { '@type': 'Organization', name: site.legalName },
+  },
+};
+
+const benefits = [
+  { title: 'Diseño a partir de tu idea', text: 'Nos mandas una foto o una descripción y lo convertimos en una figura con su esencia.' },
+  { title: 'Pintado a mano', text: 'Cada detalle —cara, ropa, complementos— se pinta a mano, uno a uno.' },
+  { title: 'Pieza única', text: 'No existe otra igual. Un regalo con el que sorprender de verdad.' },
+  { title: 'El regalo que se recuerda', text: 'Cumpleaños, despedidas, aniversarios, jubilaciones… o simplemente porque sí.' },
+];
+
+const regalos = ['Cumpleaños', 'Despedidas', 'Aniversarios', 'Jubilaciones', 'Regalos de empresa', 'Bodas'];
+
+const faqFunko = [
+  {
+    q: '¿Cómo os envío la referencia para mi Funko Pop?',
+    a: 'Con una o varias fotos claras (de frente y de perfil si puede ser) y cualquier detalle que quieras destacar: peinado, ropa, complementos, mascota, aficiones… En el formulario de presupuesto puedes subir todas las imágenes que necesites.',
+  },
+  {
+    q: '¿Puedo pedir más de una figura o una pareja?',
+    a: '¡Claro! Hacemos figuras individuales, parejas y pequeños grupos. Cuéntanos qué tienes en mente y lo presupuestamos.',
+  },
+  {
+    q: '¿Cuánto cuesta un Funko Pop personalizado?',
+    a: 'Desde 39,90 € por figura, según el nivel de detalle y los complementos. Te damos el precio exacto al ver tu idea.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} jsonLd={productJsonLd}>
+  <PageHero
+    eyebrow="Producto original"
+    title="Funko Pops personalizados, pintados a mano"
+    text="Convertimos a quien tú quieras en una figura única de coleccionista. Nos das la idea o una foto y nosotros la pintamos a mano, detalle a detalle. El regalo que nadie espera."
+    primaryCta={{ label: 'Pedir presupuesto', href: '/presupuesto' }}
+    secondaryCta={{ label: 'Ver diseños', href: '/galeria' }}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">Por qué gusta tanto</span>
+        <h2>Un regalo con nombre y apellidos</h2>
+      </div>
+      <div class="grid grid-2x2">
+        {
+          benefits.map((b) => (
+            <article class="feature">
+              <div class="feature__icon"><Isotipo size={26} /></div>
+              <div>
+                <h3 class="feature__title">{b.title}</h3>
+                <p class="feature__text">{b.text}</p>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Algunas figuras</span>
+        <h2>Funkos que hemos pintado</h2>
+      </div>
+      <Gallery limit={6} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow center">
+      <span class="eyebrow">Perfectos para regalar en…</span>
+      <h2>Cualquier ocasión especial</h2>
+      <ul class="tags mt-6">
+        {regalos.map((r) => <li class="tag">{r}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Precio orientativo</span>
+        <h2>¿Cuánto cuesta un Funko personalizado?</h2>
+      </div>
+      <div class="mx-auto" style="max-width: 400px;">
+        {funkoTier.map((t) => <PriceCard {...t} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container-narrow">
+      <div class="section-head center">
+        <span class="eyebrow">Dudas frecuentes</span>
+        <h2>Preguntas sobre Funkos personalizados</h2>
+      </div>
+      <Faq items={faqFunko} />
+    </div>
+  </section>
+
+  <CtaBanner title="Hagamos tu figura única" text="Mándanos una foto o cuéntanos la idea y te decimos precio y plazo sin compromiso." />
+</BaseLayout>

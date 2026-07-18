@@ -1,0 +1,65 @@
+---
+import Button from './Button.astro';
+import { contact } from '../config/site';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = '¿Tienes un evento a la vista?',
+  text = 'Cuéntanos tu idea y te damos un presupuesto orientativo sin compromiso. Puedes subir bocetos o referencias: cuanto más nos cuentes, mejor.',
+} = Astro.props;
+---
+
+<section class="section cta-banner podium-pattern--blue">
+  <div class="container cta-banner__inner">
+    <div>
+      <h2 class="cta-banner__title">{title}</h2>
+      <p class="cta-banner__text">{text}</p>
+    </div>
+    <div class="cta-banner__actions">
+      <Button href="/presupuesto" variant="ink" size="lg">Pedir presupuesto</Button>
+      <Button href={`https://wa.me/${contact.whatsapp}`} variant="white" size="lg" target="_blank" rel="noopener">
+        Escríbenos por WhatsApp
+      </Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-banner {
+    color: var(--ink);
+  }
+  .cta-banner__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  .cta-banner__title {
+    font-size: var(--fs-h2);
+    font-weight: 900;
+    max-width: 18ch;
+  }
+  .cta-banner__text {
+    margin-top: 0.75rem;
+    max-width: 46ch;
+    color: rgba(26, 26, 26, 0.8);
+  }
+  .cta-banner__actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    flex-shrink: 0;
+  }
+  @media (max-width: 720px) {
+    .cta-banner__actions {
+      width: 100%;
+    }
+    .cta-banner__actions :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,143 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PriceCard from '../components/PriceCard.astro';
+import Faq from '../components/Faq.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import { priceFactors, priceTiers, faqs, examplePacks, pricing } from '../config/site';
+
+const title = 'Precios';
+const description =
+  'Precios orientativos de trofeos y medallas personalizadas de Makeable. Medallas desde 6 €, trofeos desde 25 € y gama alta con base de cemento. Envíos incluidos y presupuesto sin compromiso.';
+
+const priceFaqs = faqs.filter((_, i) => [0, 2, 5, 6].includes(i));
+---
+
+<BaseLayout title={title} description={description}>
+  <PageHero
+    eyebrow="Sin sorpresas"
+    title="Precios orientativos"
+    text="Sabemos que da pereza pedir presupuesto sin tener ni idea de precios. Por eso te lo ponemos fácil: aquí tienes los puntos de partida por gama. El precio final depende de tu proyecto."
+    align="center"
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-4">
+        {priceTiers.map((t) => <PriceCard {...t} />)}
+      </div>
+      <p class="note center">
+        * Precios orientativos por unidad. <strong>Envíos a toda España incluidos</strong> ·
+        Pedido mínimo {pricing.minOrder} €. El importe final se ajusta según tu proyecto.
+      </p>
+    </div>
+  </section>
+
+  <!-- Ejemplos de pedidos reales -->
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Ejemplos reales</span>
+        <h2>Pedidos que ya hemos hecho</h2>
+        <p class="lead mx-auto measure">
+          Para que te hagas una idea de verdad, estos son algunos pedidos reales con su precio
+          (envíos incluidos).
+        </p>
+      </div>
+      <div class="grid grid-4">
+        {
+          examplePacks.map((p) => (
+            <article class="pack">
+              <p class="pack__price">{p.approx ? '~' : ''}{p.price} €</p>
+              <h3 class="pack__name">{p.name}</h3>
+              <p class="pack__detail">{p.detail}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Cómo calculamos el precio</span>
+        <h2>Qué influye en lo que cuesta</h2>
+        <p class="lead mx-auto measure">
+          Cada premio es distinto. Estos son los factores que hacen que un proyecto cueste más o menos.
+        </p>
+      </div>
+      <div class="grid grid-4">
+        {
+          priceFactors.map((f, i) => (
+            <article class="info-card factor">
+              <span class="factor__n">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="info-card__title">{f.title}</h3>
+              <p class="factor__text">{f.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container container-narrow">
+      <div class="section-head center">
+        <span class="eyebrow">Dudas frecuentes</span>
+        <h2>Preguntas sobre precios y pedidos</h2>
+      </div>
+      <Faq items={priceFaqs} />
+    </div>
+  </section>
+
+  <CtaBanner title="¿Quieres un precio exacto?" text="Cuéntanos tu evento, la cantidad y tu idea (puedes subir bocetos) y te damos un presupuesto ajustado en 24–48 h." />
+</BaseLayout>
+
+<style>
+  .note {
+    margin-top: 1.75rem;
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+  .factor {
+    position: relative;
+  }
+  .factor__n {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--blue);
+    letter-spacing: -0.03em;
+    margin-bottom: 0.35rem;
+  }
+  .factor__text {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    margin-top: 0.35rem;
+  }
+
+  .pack {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2rem);
+    text-align: center;
+  }
+  .pack__price {
+    font-size: 2.25rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    color: var(--blue-700);
+    line-height: 1;
+  }
+  .pack__name {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin: 0.6rem 0 0.25rem;
+  }
+  .pack__detail {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+</style>

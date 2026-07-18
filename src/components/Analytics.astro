@@ -1,0 +1,29 @@
+---
+/**
+ * Analítica web sin cookies (no requiere banner de consentimiento).
+ * Se activa según `analytics.provider` en src/config/site.ts.
+ * Mientras esté vacío, no carga ningún script.
+ */
+import { analytics as a } from '../config/site';
+---
+
+{
+  a.provider === 'plausible' && a.domain && (
+    <script defer data-domain={a.domain} src="https://plausible.io/js/script.js" is:inline />
+  )
+}
+{
+  a.provider === 'cloudflare' && a.cloudflareToken && (
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon={`{"token": "${a.cloudflareToken}"}`}
+      is:inline
+    />
+  )
+}
+{
+  a.provider === 'umami' && a.umamiSrc && a.umamiWebsiteId && (
+    <script defer src={a.umamiSrc} data-website-id={a.umamiWebsiteId} is:inline />
+  )
+}

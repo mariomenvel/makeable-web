@@ -1,0 +1,101 @@
+---
+/**
+ * Botón / enlace con estilo de marca.
+ * variant: 'primary' (azul) | 'ink' (negro) | 'outline' | 'ghost' | 'white'
+ */
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'ink' | 'outline' | 'ghost' | 'white';
+  size?: 'md' | 'lg';
+  type?: 'button' | 'submit';
+  class?: string;
+  [key: string]: any;
+}
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  type = 'button',
+  class: className = '',
+  ...rest
+} = Astro.props;
+
+const cls = `btn btn--${variant} btn--${size} ${className}`;
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag class={cls} href={href} type={href ? undefined : type} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    --btn-bg: var(--blue);
+    --btn-fg: var(--ink);
+    --btn-bd: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1;
+    text-align: center;
+    padding: 0.85rem 1.5rem;
+    border-radius: var(--radius-pill);
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    border: 2px solid var(--btn-bd);
+    transition:
+      transform var(--dur) var(--ease),
+      background var(--dur) var(--ease),
+      color var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+    white-space: nowrap;
+  }
+  .btn--lg {
+    padding: 1.05rem 2rem;
+    font-size: 1.0625rem;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .btn:active {
+    transform: translateY(0);
+  }
+
+  .btn--primary {
+    --btn-bg: var(--blue);
+    --btn-fg: var(--ink);
+  }
+  .btn--primary:hover {
+    --btn-bg: var(--blue-600);
+  }
+  .btn--ink {
+    --btn-bg: var(--ink);
+    --btn-fg: var(--white);
+  }
+  .btn--white {
+    --btn-bg: var(--white);
+    --btn-fg: var(--ink);
+  }
+  .btn--outline {
+    --btn-bg: transparent;
+    --btn-fg: var(--ink);
+    --btn-bd: var(--ink);
+  }
+  .btn--outline:hover {
+    --btn-bg: var(--ink);
+    --btn-fg: var(--white);
+  }
+  .btn--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--ink);
+    padding-inline: 0.75rem;
+  }
+  .btn--ghost:hover {
+    box-shadow: none;
+    color: var(--blue-700);
+  }
+</style>

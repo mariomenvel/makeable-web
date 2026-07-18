@@ -1,0 +1,152 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBanner from '../components/CtaBanner.astro';
+import Isotipo from '../components/Isotipo.astro';
+
+const title = 'Diseña tu trofeo con IA';
+const description =
+  'Muy pronto podrás diseñar tu trofeo o medalla con inteligencia artificial: descríbelo y verás una propuesta al instante. Mientras tanto, pídenos tu presupuesto personalizado.';
+
+const steps = [
+  { title: 'Descríbelo', text: 'Cuéntale a la IA cómo imaginas tu trofeo o medalla: deporte, estilo, colores, temática…' },
+  { title: 'Ve la propuesta', text: 'La IA genera una imagen de tu premio al instante, para que puedas visualizarlo.' },
+  { title: 'Afínalo', text: 'Pide cambios en una conversación hasta que sea justo lo que tienes en mente.' },
+  { title: 'Lo fabricamos', text: 'Cuando te guste, tomamos ese diseño como punto de partida y lo hacemos realidad en 3D.' },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <PageHero
+    eyebrow="Próximamente · Fase 2"
+    title="Diseña tu premio con inteligencia artificial"
+    text="Estamos preparando algo grande: una herramienta para que imagines tu trofeo o medalla describiéndolo con tus palabras y la veas cobrar forma al instante. Aún no está lista, pero puedes ser de los primeros en probarla."
+    align="center"
+    primaryCta={{ label: 'Mientras tanto, pide presupuesto', href: '/presupuesto' }}
+  />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head center">
+        <span class="eyebrow">Cómo funcionará</span>
+        <h2>De tu imaginación a tu podio</h2>
+      </div>
+      <ol class="ia-steps">
+        {
+          steps.map((s, i) => (
+            <li class="ia-step">
+              <div class="ia-step__badge">
+                <Isotipo size={24} />
+                <span>{i + 1}</span>
+              </div>
+              <h3 class="ia-step__title">{s.title}</h3>
+              <p class="ia-step__text">{s.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container container-narrow center">
+      <span class="eyebrow">Lista de espera</span>
+      <h2>¿Quieres probarlo antes que nadie?</h2>
+      <p class="lead mx-auto measure">
+        Déjanos tu email y te avisaremos en cuanto la herramienta de diseño con IA esté disponible.
+      </p>
+      <form class="waitlist" id="waitlist" method="POST">
+        <input type="email" name="email" required placeholder="tucorreo@ejemplo.com" aria-label="Tu email" />
+        <button type="submit" class="btn btn--primary">Avísame</button>
+      </form>
+      <p class="waitlist__note" id="waitlist-note" hidden>¡Genial! Te avisaremos en cuanto esté lista. ✨</p>
+    </div>
+  </section>
+
+  <CtaBanner />
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('waitlist');
+  const note = document.getElementById('waitlist-note');
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    // Fase 2: conectar a un servicio de lista de correo. De momento, confirmación local.
+    if (form.checkValidity()) {
+      note.hidden = false;
+      form.reset();
+    } else {
+      form.reportValidity();
+    }
+  });
+</script>
+
+<style>
+  .ia-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+  .ia-step {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+  .ia-step__badge {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    margin-bottom: 1rem;
+  }
+  .ia-step__badge span {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-weight: 900;
+    color: var(--white);
+    font-size: 0.75rem;
+  }
+  .ia-step__title {
+    font-size: var(--fs-h3);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .ia-step__text {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+  }
+
+  .waitlist {
+    display: flex;
+    gap: 0.6rem;
+    max-width: 460px;
+    margin: 1.75rem auto 0;
+  }
+  .waitlist input {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-pill);
+    background: var(--white);
+  }
+  .waitlist input:focus {
+    outline: none;
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(82, 196, 234, 0.2);
+  }
+  .waitlist__note {
+    margin-top: 1rem;
+    color: var(--blue-700);
+    font-weight: 500;
+  }
+  @media (max-width: 480px) {
+    .waitlist {
+      flex-direction: column;
+    }
+    .waitlist .btn {
+      width: 100%;
+    }
+  }
+</style>

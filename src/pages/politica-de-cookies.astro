@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../config/site';
+---
+
+<BaseLayout title="Política de cookies" description="Información sobre el uso de cookies en la web de Makeable Studio.">
+  <section class="section">
+    <div class="container prose">
+      <h1>Política de cookies</h1>
+      <p>
+        Una cookie es un pequeño archivo que se descarga en tu dispositivo al visitar ciertas páginas
+        web, y que permite almacenar y recuperar información sobre la navegación.
+      </p>
+
+      <h2>¿Usamos cookies?</h2>
+      <p>
+        Actualmente esta web <strong>no utiliza cookies de análisis, publicidad ni seguimiento</strong>.
+        Solo podrían emplearse cookies estrictamente técnicas necesarias para el funcionamiento del
+        sitio, que están exentas del deber de consentimiento según la normativa vigente.
+      </p>
+
+      <h2>Cookies de terceros</h2>
+      <p>
+        Si en el futuro incorporamos servicios de terceros (por ejemplo, analítica web, mapas o vídeos
+        incrustados), actualizaremos esta política e implementaremos, cuando corresponda, un sistema de
+        consentimiento previo.
+      </p>
+
+      <h2>Cómo gestionar las cookies</h2>
+      <p>
+        Puedes configurar o desactivar las cookies desde los ajustes de tu navegador. Consulta la ayuda
+        de tu navegador (Chrome, Firefox, Safari, Edge…) para más información.
+      </p>
+
+      <p class="prose__note">
+        Para cualquier duda sobre esta política puedes contactar con {site.legalName}.<br />
+        Última actualización: {new Date().toLocaleDateString('es-ES', { year: 'numeric', month: 'long' })}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .prose__note {
+    margin-top: 2.5rem;
+    font-size: var(--fs-caption);
+    color: var(--gray-500);
+  }
+</style>
