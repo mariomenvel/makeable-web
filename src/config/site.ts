@@ -17,10 +17,10 @@ export const site = {
 export const contact = {
   email: 'presupuestos@makeable.es', // email público (se muestra en la web)
   notifyTo: 'infomakeable@gmail.com', // a dónde llegan los avisos del formulario (directo, fiable)
-  phone: '+34 656 603 147',
-  phoneHref: '+34656603147',
+  phone: '+34 633 428 695',
+  phoneHref: '+34633428695',
   // WhatsApp usa el número sin símbolos ni espacios.
-  whatsapp: '34656603147',
+  whatsapp: '34633428695',
   instagram: 'https://www.instagram.com/makeablestudio',
   instagramHandle: '@makeablestudio',
   tiktok: 'https://www.tiktok.com/@makeablestudio',
